@@ -1,0 +1,78 @@
+<?xml version='1.0' encoding='utf-8'?>
+<index version="1" name="Aiwist">
+  <category name="Transcriber">
+    <reapack name="Aiwist_Transcriber.lua" type="script" desc="Ai Transcriber">
+      <metadata>
+        <description>{\rtf1\ansi Ai Transcriber: audio to MIDI in REAPER. Windows x64. Requires ReaImGui (cfillion) from ReaTeam Extensions. Includes the native Vulkan/CPU engine; models download separately in Settings. First launch displays bundled licenses.}</description>
+        <link rel="website" href="https://github.com/Aiwist/ai-transcriber">GitHub</link>
+        <link rel="website" href="https://boosty.to/aiwist">Boosty</link>
+        <link rel="screenshot">https://raw.githubusercontent.com/Aiwist/ai-transcriber/main/assets/screenshots/screen-1.png</link>
+        <link rel="screenshot">https://raw.githubusercontent.com/Aiwist/ai-transcriber/main/assets/screenshots/screen-2.png</link>
+      </metadata>
+      <version name="1.0.2" author="Aiwist" time="2026-11-13T13:58:18Z">
+        <changelog>Audio to MIDI in REAPER: local transcription on CPU or Vulkan GPU.
+Install through ReaPack or with the standalone ZIP installer; both deliver the same files.
+Models Small, Medium and Large are installed in Settings; licenses are shown on first launch.</changelog>
+        <source platform="win64" file="Aiwist_Transcriber.lua" main="main">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/Aiwist_Transcriber.lua</source>
+        <source platform="win64" file="INSTALL_LICENSES_RU.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/INSTALL_LICENSES_RU.txt</source>
+        <source platform="win64" file="NOTICE.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/NOTICE.txt</source>
+        <source platform="win64" file="README_RU.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/README_RU.txt</source>
+        <source platform="win64" file="Register_Ai_Transcriber.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/Register_Ai_Transcriber.lua</source>
+        <source platform="win64" file="THIRD_PARTY_NOTICES_RU.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/THIRD_PARTY_NOTICES_RU.txt</source>
+        <source platform="win64" file="capabilities.json">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/capabilities.json</source>
+        <source platform="win64" file="fonts/Inter_18pt-Bold.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/Inter_18pt-Bold.ttf</source>
+        <source platform="win64" file="fonts/Inter_18pt-Light.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/Inter_18pt-Light.ttf</source>
+        <source platform="win64" file="fonts/Inter_18pt-Regular.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/Inter_18pt-Regular.ttf</source>
+        <source platform="win64" file="fonts/Inter_18pt-SemiBold.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/Inter_18pt-SemiBold.ttf</source>
+        <source platform="win64" file="fonts/JetBrainsMono-Medium.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/JetBrainsMono-Medium.ttf</source>
+        <source platform="win64" file="fonts/JetBrainsMono-Regular.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/JetBrainsMono-Regular.ttf</source>
+        <source platform="win64" file="fonts/lucide.ttf">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/fonts/lucide.ttf</source>
+        <source platform="win64" file="lib/first_run.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/first_run.lua</source>
+        <source platform="win64" file="lib/gguf_health.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/gguf_health.lua</source>
+        <source platform="win64" file="lib/gui_context.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/gui_context.lua</source>
+        <source platform="win64" file="lib/hidden_runner.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/hidden_runner.lua</source>
+        <source platform="win64" file="lib/instrument_memory.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/instrument_memory.lua</source>
+        <source platform="win64" file="lib/json.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/json.lua</source>
+        <source platform="win64" file="lib/last_result.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/last_result.lua</source>
+        <source platform="win64" file="lib/model_picker.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/model_picker.lua</source>
+        <source platform="win64" file="lib/native_components.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/native_components.lua</source>
+        <source platform="win64" file="lib/native_devices.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/native_devices.lua</source>
+        <source platform="win64" file="lib/native_downloads.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/native_downloads.lua</source>
+        <source platform="win64" file="lib/profile_identity.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/profile_identity.lua</source>
+        <source platform="win64" file="lib/setup_ui.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/setup_ui.lua</source>
+        <source platform="win64" file="lib/state_paths.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/state_paths.lua</source>
+        <source platform="win64" file="lib/support_zip.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/support_zip.lua</source>
+        <source platform="win64" file="lib/windows_paths.lua">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/lib/windows_paths.lua</source>
+        <source platform="win64" file="licenses/AiTranscriber-Lua-APACHE-2.0.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/AiTranscriber-Lua-APACHE-2.0.txt</source>
+        <source platform="win64" file="licenses/Inter-OFL-1.1.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/Inter-OFL-1.1.txt</source>
+        <source platform="win64" file="licenses/JetBrainsMono-OFL-1.1.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/JetBrainsMono-OFL-1.1.txt</source>
+        <source platform="win64" file="licenses/Lucide-LICENSE.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/Lucide-LICENSE.txt</source>
+        <source platform="win64" file="licenses/MuScriptor-Code-MIT.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/MuScriptor-Code-MIT.txt</source>
+        <source platform="win64" file="licenses/MuScriptor-Specific-Conditions.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/MuScriptor-Specific-Conditions.txt</source>
+        <source platform="win64" file="licenses/MuScriptor-Weights-CC-BY-NC-4.0.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/MuScriptor-Weights-CC-BY-NC-4.0.txt</source>
+        <source platform="win64" file="licenses/PFFFT-FFTPACK-LICENSE.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/PFFFT-FFTPACK-LICENSE.txt</source>
+        <source platform="win64" file="licenses/dr-wav-LICENSE.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/dr-wav-LICENSE.txt</source>
+        <source platform="win64" file="licenses/ggml-MIT.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/ggml-MIT.txt</source>
+        <source platform="win64" file="licenses/libsamplerate-BSD.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/libsamplerate-BSD.txt</source>
+        <source platform="win64" file="licenses/muscriptor-cpp-MIT.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/muscriptor-cpp-MIT.txt</source>
+        <source platform="win64" file="licenses/nlohmann-json-MIT.txt">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/licenses/nlohmann-json-MIT.txt</source>
+        <source platform="win64" file="manifest.json">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/manifest.json</source>
+        <source platform="win64" file="manifest.tsv">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/manifest.tsv</source>
+        <source platform="win64" file="native_models.json">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/native_models.json</source>
+        <source platform="win64" file="native_release.json">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/native_release.json</source>
+        <source platform="win64" file="runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe">https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.2/ai_transcriber_native_cpu.exe</source>
+        <source platform="win64" file="runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe">https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.2/ai_transcriber_native_vulkan.exe</source>
+        <source platform="win64" file="setup/bootstrap.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/bootstrap.ps1</source>
+        <source platform="win64" file="setup/common.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/common.ps1</source>
+        <source platform="win64" file="setup/download_progress.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/download_progress.ps1</source>
+        <source platform="win64" file="setup/launch_process.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/launch_process.ps1</source>
+        <source platform="win64" file="setup/maintenance.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/maintenance.ps1</source>
+        <source platform="win64" file="setup/native_process.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/native_process.ps1</source>
+        <source platform="win64" file="setup/native_runner.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/native_runner.ps1</source>
+        <source platform="win64" file="setup/native_setup.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/native_setup.ps1</source>
+        <source platform="win64" file="setup/single_runner.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/single_runner.ps1</source>
+        <source platform="win64" file="setup/worker.ps1">https://raw.githubusercontent.com/Aiwist/ai-transcriber/v1.0.2/Transcriber/setup/worker.ps1</source>
+      </version>
+    </reapack>
+  </category>
+</index>

@@ -1,0 +1,2 @@
+# Preserve exact release bytes and checksum-sensitive line endings.
+* -text

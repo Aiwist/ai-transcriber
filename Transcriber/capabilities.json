@@ -1,0 +1,6 @@
+{
+  "schema": 1,
+  "queue": false,
+  "basic_pitch": false,
+  "midi_processing": false
+}

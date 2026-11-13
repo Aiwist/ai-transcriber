@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "repository": "Aiwist/ai-transcriber",
+  "name": "Aiwist",
+  "category": "Transcriber",
+  "package": "Aiwist_Transcriber.lua",
+  "time": "2026-11-13T13:58:18Z",
+  "changes": [
+    "Audio to MIDI in REAPER: local transcription on CPU or Vulkan GPU.",
+    "Install through ReaPack or with the standalone ZIP installer; both deliver the same files.",
+    "Models Small, Medium and Large are installed in Settings; licenses are shown on first launch."
+  ]
+}

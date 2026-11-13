@@ -1,0 +1,47 @@
+Ai Transcriber — лицензия и сведения об авторстве
+
+Copyright © 2026 Aiwist.
+
+Оригинальный Lua-код Ai Transcriber, права на который принадлежат Aiwist, распространяется по лицензии Apache License, Version 2.0.
+
+Лицензия разрешает использование, копирование, изменение и распространение программы, включая коммерческое, при соблюдении её условий. При распространении необходимо сохранять применимые уведомления об авторстве, передавать текст лицензии и предусмотренные ею сведения NOTICE, а также отмечать изменённые файлы.
+
+Программа предоставляется без гарантий в пределах, установленных лицензией и применимым законодательством.
+
+Полные условия:
+https://www.apache.org/licenses/LICENSE-2.0
+
+Разработка с помощью ИИ
+
+При создании программного кода использовался инструмент искусственного интеллекта OpenAI Codex. Концепция проекта, постановка задач, проверка поведения и решения о развитии и выпуске — Aiwist.
+
+Сторонние компоненты
+
+Настоящее уведомление относится к собственной части Lua-кода Ai Transcriber. Сторонние библиотеки, движки, модели и другие включённые или отдельно загружаемые материалы сохраняют лицензии и авторство соответствующих правообладателей.
+
+Русский текст предназначен для ознакомления и не изменяет условия оригинальной английской лицензии Apache License, Version 2.0.
+
+================================================================
+
+Ai Transcriber — License and Attribution
+
+Copyright © 2026 Aiwist.
+
+The original Lua code of Ai Transcriber owned by Aiwist is licensed under the Apache License, Version 2.0.
+
+The license permits use, copying, modification and redistribution, including commercial distribution, subject to its conditions. Redistribution requires retaining applicable attribution notices, providing the license and required NOTICE information, and identifying modified files.
+
+No warranties are provided except as required by the license or applicable law.
+
+Complete license terms:
+https://www.apache.org/licenses/LICENSE-2.0
+
+AI-Assisted Development
+
+OpenAI Codex, an artificial intelligence development tool, was used to create the program code. Project conception, task definition, behavioral testing, and decisions concerning development and releases are by Aiwist.
+
+Third-Party Components
+
+This notice covers the project's own Lua code. Third-party libraries, engines, models and other bundled or separately downloaded materials retain their respective licenses and copyright notices.
+
+This notice does not amend or replace the complete Apache License, Version 2.0. The Russian version is provided for convenience; the original English Apache License governs its terms.

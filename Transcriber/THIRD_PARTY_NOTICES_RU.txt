@@ -1,0 +1,24 @@
+Ai Transcriber — сторонние компоненты
+Версия: 1.0.2
+
+MuScriptor — Kyutai / Mirelo. Код MIT; веса — CC BY-NC 4.0 и дополнительные
+условия авторов. Веса в архив не включены; конвертация GGUF не меняет их условий.
+https://github.com/muscriptor/muscriptor
+https://huggingface.co/DamRsn/muscriptor-gguf
+
+muscriptor.cpp — Damien Ronssin и участники, MIT.
+https://github.com/DamRsn/muscriptor.cpp
+ggml — Georgi Gerganov и участники, MIT. https://github.com/ggml-org/ggml
+libsamplerate — Erik de Castro Lopo и участники, BSD-2-Clause.
+https://github.com/libsndfile/libsamplerate
+dr_wav — David Reid. https://github.com/mackron/dr_libs
+nlohmann/json — Niels Lohmann, MIT. https://github.com/nlohmann/json
+PFFFT — Julien Pommier; FFTPACK — UCAR/NCAR, BSD-подобные условия.
+
+Шрифты: Inter и JetBrains Mono — SIL OFL 1.1; Lucide/Feather — ISC/MIT.
+ReaImGui — Christian Fillion и участники, LGPL v3, отдельное расширение REAPER.
+https://github.com/cfillion/reaimgui
+
+Полные оригинальные тексты находятся в licenses и лицензионном листе.
+Они имеют приоритет над этой справкой. Сторонние авторы не заявлены партнёрами
+Ai Transcriber. Basic Pitch и его реализация в эту редакцию не включены.

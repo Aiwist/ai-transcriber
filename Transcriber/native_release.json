@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "production_state": true,
+  "version": "1.0.2",
+  "runtime": {
+    "file": "runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe",
+    "asset": "ai_transcriber_native_vulkan.exe",
+    "bytes": 59002880,
+    "sha256": "3ccbfafc8a86bcd99dde93cb4c6bb5f0a3837a66bff4ebe606f40d87ec36d79f",
+    "upstream": "https://github.com/DamRsn/muscriptor.cpp",
+    "commit": "34a01513f3edfacf21fba7849859b703a6e2a9df",
+    "backends": [
+      "Vulkan",
+      "CPU"
+    ]
+  },
+  "cpu_runtime": {
+    "file": "runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe",
+    "asset": "ai_transcriber_native_cpu.exe",
+    "bytes": 3442688,
+    "sha256": "e170017aa1584eac08f777c80894c69b8ce43f769cc50114799172d955ce88c4",
+    "upstream": "https://github.com/DamRsn/muscriptor.cpp",
+    "commit": "34a01513f3edfacf21fba7849859b703a6e2a9df",
+    "backends": [
+      "CPU"
+    ]
+  }
+}
