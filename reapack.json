@@ -4,10 +4,12 @@
   "name": "Aiwist",
   "category": "Transcriber",
   "package": "Aiwist_Transcriber.lua",
-  "time": "2026-11-15T07:39:57Z",
+  "time": "2026-11-15T09:49:46Z",
   "changes": [
-    "Fix automatic instrument detection when no instruments are selected (AITN-120).",
-    "Keep explicit instrument selection working, including clearing the selection back to automatic mode.",
-    "Verify empty and explicit instrument lists with both CPU and Vulkan engines."
+    "Fix the single-transcription config writer: an empty instrument selection enables automatic detection.",
+    "Use the shared JSON encoder when saving the actual engine configuration; no queue is added.",
+    "Exercise the real single-transcription entry point and pass its exact config file to CPU and Vulkan engines.",
+    "Restore normal Windows integrity labels during ZIP installation and before ReaPack engine launches.",
+    "Show AITN-114 if Windows prevents integrity repair; display progress percentages only once."
   ]
 }

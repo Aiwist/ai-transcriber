@@ -66,6 +66,11 @@ class PackageTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(prefix='Installer_Сверка_', dir=ROOT / '.work') as temporary:
             resource = Path(temporary)
             (resource / 'reaper.ini').write_text('[REAPER]\n')
+            # Reproduce a resource folder previously marked Low by an agent.
+            author = resource / 'Scripts/Aiwist'
+            author.mkdir(parents=True)
+            low = subprocess.run(['icacls', str(author), '/setintegritylevel', '(OI)(CI)L'], capture_output=True)
+            self.assertEqual(low.returncode, 0)
             code = r'''param([string]$Resource)
 $ErrorActionPreference='Stop'
 . './Install.ps1' -LibraryOnly
@@ -91,6 +96,12 @@ Write-Output ('INSTALLED '+$result.Files)
             self.assertEqual(actual, package.package_files(release))
             for name in actual:
                 self.assertEqual(package.sha256(installed / name), package.sha256(package.PAYLOAD / name), name)
+            # A successful byte copy alone does not prove a usable installation.
+            engine = installed / release['cpu_runtime']['file']
+            probe = subprocess.run([str(engine), '--devices', '--out', str(resource / 'devices.json')],
+                                   capture_output=True, timeout=15,
+                                   creationflags=getattr(subprocess, 'CREATE_NO_WINDOW', 0))
+            self.assertEqual(probe.returncode, 0, probe.stderr.decode(errors='replace'))
 
     @unittest.skipUnless(shutil.which('powershell'), 'Windows PowerShell required')
     def test_clean_install_and_corrupt_file(self):

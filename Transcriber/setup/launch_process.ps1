@@ -38,6 +38,10 @@ try {
         $workerArguments=' -Config "'+$configPath+'" -StateRoot "'+$root+'"'+$(if($Recover){' -Recover'}else{''})
     }
     foreach($path in @($runner,$work,$root)){if($path -match '["\r\n]'){throw 'Invalid single launch argument'}}
+    # ReaPack does not execute Install.ps1. Repair inherited Low labels before
+    # starting an engine, using the same routine as the standalone installer.
+    . (Join-Path $PSScriptRoot 'integrity.ps1')
+    Repair-AitEngineIntegrity (Split-Path -Parent $PSScriptRoot)
     # No inherited handles: .NET Framework Process.Start can keep REAPER's
     # capture pipes open in a detached child, even with CreateNoWindow.
     Add-Type -TypeDefinition @'
@@ -87,6 +91,18 @@ public static class AitSingleLaunch {
     if($work -and -not $started){try{
         $log=Join-Path $work 'launch_error.log';Assert-LaunchOrdinary $log
         [IO.File]::WriteAllText($log,$detail,[Text.UTF8Encoding]::new($false))
+        if($detail -match 'AITN-114'){
+            $message='AITN-114: Windows не разрешила восстановить обычный уровень запуска движка. Проверьте права на папку Ai Transcriber и повторите установку.'
+            if($PSCmdlet.ParameterSetName -eq 'Single'){
+                $failure=@{schema=1;id=$id;code=1;engine='native';message=$message}
+                $failurePath=Join-Path $work 'exit.json'
+            }else{
+                $failure=@{schema=1;job_id=$id;ok=$false;message=$message;error=@{code='AITN-114';title='Не удалось настроить запуск движка';detail=$detail;stage='Запуск помощника'}}
+                $failurePath=Join-Path $work 'result.json'
+            }
+            Assert-LaunchOrdinary $failurePath
+            if(-not [IO.File]::Exists($failurePath)){[IO.File]::WriteAllText($failurePath,($failure|ConvertTo-Json -Depth 8 -Compress),[Text.UTF8Encoding]::new($false))}
+        }
     }catch{}}
     [Console]::WriteLine($detail)
     exit 1

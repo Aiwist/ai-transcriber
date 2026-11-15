@@ -1,4 +1,4 @@
--- @version 1.0.3
+-- @version 1.0.4
 -- @description Ai Transcriber
 -- @author Aiwist
 -- @license Apache-2.0
@@ -6,9 +6,11 @@
 -- AI-assisted development: OpenAI Codex.
 -- Attribution/scope: NOTICE.txt; full license: licenses/AiTranscriber-Lua-APACHE-2.0.txt
 -- @changelog
---   Fix automatic instrument detection when no instruments are selected (AITN-120).
---   Keep explicit instrument selection working, including clearing the selection back to automatic mode.
---   Verify empty and explicit instrument lists with both CPU and Vulkan engines.
+--   Fix the single-transcription config writer: an empty instrument selection enables automatic detection.
+--   Use the shared JSON encoder when saving the actual engine configuration; no queue is added.
+--   Exercise the real single-transcription entry point and pass its exact config file to CPU and Vulkan engines.
+--   Restore normal Windows integrity labels during ZIP installation and before ReaPack engine launches.
+--   Show AITN-114 if Windows prevents integrity repair; display progress percentages only once.
 -- @about
 --   Audio to MIDI in REAPER. Windows x64; requires ReaImGui (cfillion).
 --   The native engine supports Vulkan GPU and CPU. No Python environment.
@@ -68,11 +70,12 @@
 --   [win64 nomain] manifest.tsv
 --   [win64 nomain] native_models.json
 --   [win64 nomain] native_release.json
---   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.3/ai_transcriber_native_cpu.exe
---   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.3/ai_transcriber_native_vulkan.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.4/ai_transcriber_native_cpu.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.4/ai_transcriber_native_vulkan.exe
 --   [win64 nomain] setup/bootstrap.ps1
 --   [win64 nomain] setup/common.ps1
 --   [win64 nomain] setup/download_progress.ps1
+--   [win64 nomain] setup/integrity.ps1
 --   [win64 nomain] setup/launch_process.ps1
 --   [win64 nomain] setup/maintenance.ps1
 --   [win64 nomain] setup/native_process.ps1
@@ -97,7 +100,7 @@
 -- ============================================================
 -- РџРЈРўР
 -- ============================================================
-local SCRIPT_VERSION = "1.0.3"
+local SCRIPT_VERSION = "1.0.4"
 -- Путь к текущему скрипту: get_action_context возвращает
 -- (is_new_value, filename, sectionID, cmdID, mode, resolution)
 local _, action_full = reaper.get_action_context()
@@ -446,46 +449,6 @@ COMPONENTS.support_instance=SESSION_ID
 -- ============================================================
 -- РЈРўРР›РРўР«
 -- ============================================================
--- Простой JSON-энкодер (REAPER Lua не имеет встроенного json)
-local function json_encode(val)
-  local function enc(v)
-    local t = type(v)
-    if t == "nil" then return "null"
-    elseif t == "boolean" then return v and "true" or "false"
-    elseif t == "number" then
-      if v ~= v then return "null" end  -- NaN
-      return string.format("%.14g", v)
-    elseif t == "string" then
-      return '"' .. v:gsub('[%c"\\]', function(c)
-        if c == '"' then return '\\"'
-        elseif c == "\\" then return "\\\\"
-        elseif c == "\n" then return "\\n"
-        elseif c == "\r" then return "\\r"
-        elseif c == "\t" then return "\\t"
-        else return string.format("\\u%04x", c:byte())
-        end
-      end) .. '"'
-    elseif t == "table" then
-      local is_arr = #v > 0
-      local parts = {}
-      if is_arr then
-        for i = 1, #v do
-          parts[i] = enc(v[i])
-        end
-        return "[" .. table.concat(parts, ",") .. "]"
-      else
-        for k, vv in pairs(v) do
-          parts[#parts + 1] = enc(tostring(k)) .. ":" .. enc(vv)
-        end
-        return "{" .. table.concat(parts, ",") .. "}"
-      end
-    else
-      return "null"
-    end
-  end
-  return enc(val)
-end
-
 local function copy_file(source, destination)
   local input = io.open(source, "rb")
   if not input then return false end
@@ -978,7 +941,7 @@ local function start_transcription(prepared_sources)
   local cfg_json = TEMP .. "config.json"
   local f = io.open(cfg_json, "w")
   if f then
-    f:write(json_encode(cfg))
+    f:write(JSON.encode(cfg))
     f:close()
   else
     cleanup_audio_preparation()
@@ -1044,7 +1007,10 @@ poll_transcription = function()
   local heartbeat=JSON.load_json(TEMP..'process.json',{})
   local fraction=tonumber(heartbeat.fraction)
   state.status=tostring(heartbeat.message or tr('transcribing'))
-  if fraction and fraction>=0 and fraction<=1 then state.status=state.status..string.format(' · %d%%',math.floor(fraction*100))end
+  if fraction and fraction>=0 and fraction<=1 then
+    state.status=state.status:gsub('%s*·%s*%d+%%%s*$','')
+    state.status=state.status..string.format(' · %d%%',math.floor(fraction*100))
+  end
   state.status=state.status..string.format(' · %.0f s',elapsed)
   -- The supervisor enforces the same 25-minute limit and confirms termination.
   if elapsed > 1500 then

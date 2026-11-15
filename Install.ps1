@@ -1,6 +1,6 @@
 ﻿param([switch]$LibraryOnly)
 $ErrorActionPreference='Stop'
-$script:SetupVersion='1.0.3'
+$script:SetupVersion='1.0.4'
 $script:SetupPayloadRoot=Join-Path $PSScriptRoot 'Transcriber'
 $script:SetupFiles=@(
     'Aiwist_Transcriber.lua',
@@ -54,6 +54,7 @@ $script:SetupFiles=@(
     'setup/bootstrap.ps1',
     'setup/common.ps1',
     'setup/download_progress.ps1',
+    'setup/integrity.ps1',
     'setup/launch_process.ps1',
     'setup/maintenance.ps1',
     'setup/native_process.ps1',
@@ -188,6 +189,8 @@ function Install-AiTranscriber([string]$ResourcePath,[string]$SourceRoot=$script
             [IO.File]::WriteAllBytes($destination,$data[$name])
             if ((Get-FileHash -LiteralPath $destination -Algorithm SHA256).Hash.ToLowerInvariant() -cne (Get-SetupHash $data[$name])) { throw ('Ошибка проверки: '+$name) }
         }
+        . (Join-Path $target 'setup/integrity.ps1')
+        Repair-AitEngineIntegrity $target
         if($previous -and $previous.files -and @($previous.files.PSObject.Properties).Count -le 512){
             foreach($entry in $previous.files.PSObject.Properties){
                 $name=$entry.Name

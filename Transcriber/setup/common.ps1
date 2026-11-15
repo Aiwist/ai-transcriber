@@ -60,7 +60,7 @@ function Assert-AitOrdinaryPath([string]$Path) {
 
 function Test-AitPayload([string]$Root) {
     $manifest=Read-AitJson (Join-Path $Root 'manifest.json')
-    if (-not $manifest -or $manifest.version -ne '1.0.3' -or -not $manifest.files) { throw 'AIT2-120: Нет корректного манифеста. Переустановите Ai Transcriber через ReaPack или распакуйте полный установочный архив.' }
+    if (-not $manifest -or $manifest.version -ne '1.0.4' -or -not $manifest.files) { throw 'AIT2-120: Нет корректного манифеста. Переустановите Ai Transcriber через ReaPack или распакуйте полный установочный архив.' }
     foreach ($entry in $manifest.files.PSObject.Properties) {
         $path=[IO.Path]::GetFullPath((Join-Path $Root $entry.Name))
         if (-not $path.StartsWith($Root.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'AIT2-120: Invalid manifest path.' }
