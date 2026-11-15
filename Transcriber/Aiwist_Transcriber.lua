@@ -707,7 +707,7 @@ local function refresh_selection_if_changed()
 end
 
 local function get_selected_instruments()
-  local keys = {}
+  local keys = JSON.array()
   for _, inst in ipairs(INSTRUMENTS) do
     if state.instruments[inst.key] then
       keys[#keys + 1] = inst.key
