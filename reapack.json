@@ -4,10 +4,10 @@
   "name": "Aiwist",
   "category": "Transcriber",
   "package": "Aiwist_Transcriber.lua",
-  "time": "2026-11-13T13:58:18Z",
+  "time": "2026-11-15T07:39:57Z",
   "changes": [
-    "Audio to MIDI in REAPER: local transcription on CPU or Vulkan GPU.",
-    "Install through ReaPack or with the standalone ZIP installer; both deliver the same files.",
-    "Models Small, Medium and Large are installed in Settings; licenses are shown on first launch."
+    "Fix automatic instrument detection when no instruments are selected (AITN-120).",
+    "Keep explicit instrument selection working, including clearing the selection back to automatic mode.",
+    "Verify empty and explicit instrument lists with both CPU and Vulkan engines."
   ]
 }

@@ -1,4 +1,4 @@
--- @version 1.0.2
+-- @version 1.0.3
 -- @description Ai Transcriber
 -- @author Aiwist
 -- @license Apache-2.0
@@ -6,9 +6,9 @@
 -- AI-assisted development: OpenAI Codex.
 -- Attribution/scope: NOTICE.txt; full license: licenses/AiTranscriber-Lua-APACHE-2.0.txt
 -- @changelog
---   Audio to MIDI in REAPER: local transcription on CPU or Vulkan GPU.
---   Install through ReaPack or with the standalone ZIP installer; both deliver the same files.
---   Models Small, Medium and Large are installed in Settings; licenses are shown on first launch.
+--   Fix automatic instrument detection when no instruments are selected (AITN-120).
+--   Keep explicit instrument selection working, including clearing the selection back to automatic mode.
+--   Verify empty and explicit instrument lists with both CPU and Vulkan engines.
 -- @about
 --   Audio to MIDI in REAPER. Windows x64; requires ReaImGui (cfillion).
 --   The native engine supports Vulkan GPU and CPU. No Python environment.
@@ -68,8 +68,8 @@
 --   [win64 nomain] manifest.tsv
 --   [win64 nomain] native_models.json
 --   [win64 nomain] native_release.json
---   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.2/ai_transcriber_native_cpu.exe
---   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.2/ai_transcriber_native_vulkan.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.3/ai_transcriber_native_cpu.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.3/ai_transcriber_native_vulkan.exe
 --   [win64 nomain] setup/bootstrap.ps1
 --   [win64 nomain] setup/common.ps1
 --   [win64 nomain] setup/download_progress.ps1
@@ -97,7 +97,7 @@
 -- ============================================================
 -- РџРЈРўР
 -- ============================================================
-local SCRIPT_VERSION = "1.0.2"
+local SCRIPT_VERSION = "1.0.3"
 -- Путь к текущему скрипту: get_action_context возвращает
 -- (is_new_value, filename, sectionID, cmdID, mode, resolution)
 local _, action_full = reaper.get_action_context()

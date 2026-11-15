@@ -4,7 +4,7 @@
 instruments and press **Transcribe**. The MIDI appears below the source, ready to
 edit and play with your virtual instruments.
 
-**Windows x64 · Local processing · Vulkan GPU or CPU · Version 1.0.2**
+**Windows x64 · Local processing · Vulkan GPU or CPU · Version 1.0.3**
 
 Русская версия: [README.ru.md](README.ru.md)
 
@@ -90,7 +90,7 @@ Removing the ReaPack package does not delete these models or your preferences.
 
 ## Installation (ZIP)
 
-1. Download **Ai_Transcriber_Setup_1.0.2_Windows.zip** from
+1. Download **Ai_Transcriber_Setup_1.0.3_Windows.zip** from
    [GitHub Releases](https://github.com/Aiwist/ai-transcriber/releases).
 2. Extract the entire archive into a folder and run **Установить.bat**.
 3. Read the terms, check the REAPER resource folder and click **Install / update**.

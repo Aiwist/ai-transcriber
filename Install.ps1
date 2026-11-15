@@ -1,6 +1,6 @@
 ﻿param([switch]$LibraryOnly)
 $ErrorActionPreference='Stop'
-$script:SetupVersion='1.0.2'
+$script:SetupVersion='1.0.3'
 $script:SetupPayloadRoot=Join-Path $PSScriptRoot 'Transcriber'
 $script:SetupFiles=@(
     'Aiwist_Transcriber.lua',
