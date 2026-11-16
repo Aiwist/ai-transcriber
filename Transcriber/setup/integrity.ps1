@@ -1,6 +1,36 @@
 ﻿# Shared by the ZIP installer and ReaPack's hidden launcher.
 # Change only mandatory integrity labels on this application and its engines.
 function Repair-AitEngineIntegrity([string]$AppRoot) {
+    # A portable installation may permit file updates without allowing a security
+    # label change. Read the effective label first; normal files need no repair.
+    if(-not ('AitIntegrityLabel' -as [type])){
+        Add-Type -TypeDefinition @'
+using System;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+public static class AitIntegrityLabel {
+    [DllImport("advapi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern uint GetNamedSecurityInfoW(string name, uint kind, uint info,
+        IntPtr owner, IntPtr group, IntPtr dacl, IntPtr sacl, out IntPtr descriptor);
+    [DllImport("advapi32.dll", CharSet=CharSet.Unicode, SetLastError=true)]
+    static extern bool ConvertSecurityDescriptorToStringSecurityDescriptorW(
+        IntPtr descriptor, uint revision, uint info, out IntPtr text, out uint length);
+    [DllImport("kernel32.dll")] static extern IntPtr LocalFree(IntPtr value);
+    public static string Read(string path) {
+        IntPtr descriptor=IntPtr.Zero, text=IntPtr.Zero; uint length;
+        try {
+            uint error=GetNamedSecurityInfoW(path,1,16,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero,IntPtr.Zero,out descriptor);
+            // FAT/exFAT volumes do not support mandatory security labels.
+            if(error==1 || error==50) return "";
+            if(error!=0) throw new Win32Exception((int)error);
+            if(!ConvertSecurityDescriptorToStringSecurityDescriptorW(descriptor,1,16,out text,out length))
+                throw new Win32Exception(Marshal.GetLastWin32Error());
+            return Marshal.PtrToStringUni(text) ?? "";
+        } finally { if(text!=IntPtr.Zero) LocalFree(text); if(descriptor!=IntPtr.Zero) LocalFree(descriptor); }
+    }
+}
+'@
+    }
     $base=[IO.Path]::GetFullPath($AppRoot).TrimEnd('\')
     if($base -eq [IO.Path]::GetPathRoot($base).TrimEnd('\')){throw 'AITN-114: Invalid application folder.'}
     $release=Get-Content -LiteralPath (Join-Path $base 'native_release.json') -Raw | ConvertFrom-Json
@@ -21,6 +51,8 @@ function Repair-AitEngineIntegrity([string]$AppRoot) {
         if($target.Path -match '["\r\n]'){throw 'AITN-114: Invalid application path.'}
     }
     foreach($target in $targets){
+        $label=[AitIntegrityLabel]::Read($target.Path)
+        if($label -notmatch ';(LW|UN|S-1-16-0|S-1-16-4096)\)'){continue}
         $info=[Diagnostics.ProcessStartInfo]::new()
         $info.FileName=Join-Path $env:SystemRoot 'System32\icacls.exe'
         $info.Arguments='"'+$target.Path+'" /setintegritylevel "'+$target.Label+'"'

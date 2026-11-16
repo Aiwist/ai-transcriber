@@ -135,10 +135,14 @@ function methods:draw_models(c,blocked,language,colors)
   end
   return false
 end
+function methods:busy()return self.restart_required==true or Legacy.busy(self)end
 function methods:poll()
   self.downloads:poll()
   local before=self.job
   Legacy.poll(self)
+  if before and not self.job and before.action=='native_storage_migrate'and self.data_storage then
+    self.data_storage:completed(self,self.result)
+  end
   if before and not self.job and self.result and self.result.native_active then
     self.native=self.json.load_json(self.root..'\\native_active.json',self.result.native_active);self.native_health=nil;self.native_notice=self.result.message
     self.components_root=self.native.components_root or self.components_root
@@ -156,6 +160,10 @@ end
 function methods:draw_settings(c,blocked,language,colors)
   local r=self.r
   self.language=language;self.colors=colors
+  if self.restart_required then
+    r.ImGui_TextWrapped(c,self.data_storage.notice)
+    return
+  end
   self:draw_models(c,blocked,language,colors)
   local missing=false
   for _,row in ipairs(self:component_rows())do if not row.installed and not self.downloads:busy(row.id)then missing=true end end
@@ -183,6 +191,7 @@ function methods:draw_settings(c,blocked,language,colors)
   end
   if self.result and self.result.action~='native_download'and not self.result.ok and self.result.error and r.ImGui_CollapsingHeader(c,'Подробности ошибки##native_error')then r.ImGui_TextWrapped(c,self.result.error.detail or self.result.message or'Ошибка')end
   if self.maintenance_notice then r.ImGui_TextWrapped(c,self.maintenance_notice)end
+  if self.data_storage then self.data_storage:draw(self,c,blocked,language)end
   if r.ImGui_CollapsingHeader(c,language=='en'and'Download folder##native_location'or'Папка для загрузки моделей##native_location')then
     r.ImGui_BeginDisabled(c,blocked or self:busy())
     r.ImGui_SetNextItemWidth(c,-1)

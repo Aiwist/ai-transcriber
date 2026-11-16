@@ -4,7 +4,7 @@
 instruments and press **Transcribe**. The MIDI appears below the source, ready to
 edit and play with your virtual instruments.
 
-**Windows x64 · Local processing · Vulkan GPU or CPU · Version 1.0.4**
+**Windows x64 · Local processing · Vulkan GPU or CPU · Version 1.1.0**
 
 Русская версия: [README.ru.md](README.ru.md)
 
@@ -90,7 +90,7 @@ Removing the ReaPack package does not delete these models or your preferences.
 
 ## Installation (ZIP)
 
-1. Download **Ai_Transcriber_Setup_1.0.4_Windows.zip** from
+1. Download **Ai_Transcriber_Setup_1.1.0_Windows.zip** from
    [GitHub Releases](https://github.com/Aiwist/ai-transcriber/releases).
 2. Extract the entire archive into a folder and run **Установить.bat**.
 3. Read the terms, check the REAPER resource folder and click **Install / update**.
@@ -121,6 +121,22 @@ Both the ReaPack package and the ZIP install the same CPU and Vulkan executables
 CPU mode uses the CPU build; automatic mode and a selected GPU use the Vulkan
 build. Python and CUDA Toolkit are not required. GPU execution needs a compatible
 Vulkan driver.
+
+## Portable REAPER
+
+In a portable installation, script data defaults to `Data\Ai Transcriber` inside
+the REAPER resource folder. Change it in **Settings → Script data folder**.
+Regular installations keep `%LOCALAPPDATA%\Aiwist\Ai Transcriber`.
+
+Finish processing and downloads, and close other script windows before switching
+folders. Data is copied and verified; source files stay in place and differing
+destination files are never overwritten. You can reopen a previously created data
+folder without copying. Close and reopen the script after switching.
+
+The model folder is configured separately. Keep it inside portable REAPER when
+moving to another computer; new installations suggest
+`Data\Ai Transcriber\components`. Previously connected external models keep their
+locations. Internal paths follow the REAPER folder when it moves.
 
 ## Author and components
 

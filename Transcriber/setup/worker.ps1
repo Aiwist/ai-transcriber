@@ -18,6 +18,11 @@ if($Recover){
 }
 try{
  $job=Read-AitJson $configPath
+    if($job.action -eq 'native_storage_migrate'){
+        . (Join-Path $PSScriptRoot 'data_storage.ps1')
+        Invoke-AitStorageMigration $job $state $directory $id
+        return
+    }
  if($job.schema -ne 1 -or $job.id -cne $id){throw 'Invalid Ai Transcriber setup request'}
  if($job.action -in @('native_download','native_neuralnote','native_devices')){
   . (Join-Path $PSScriptRoot 'native_setup.ps1');Invoke-NativeModelSetup $job $state $directory $id;return

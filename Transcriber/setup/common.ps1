@@ -1,4 +1,6 @@
-﻿function Write-AitJson([string]$Path, $Value) {
+﻿. (Join-Path $PSScriptRoot 'storage_codec.ps1')
+function Write-AitJson([string]$Path, $Value) {
+    $Value=Convert-AitStorageJson $Path $Value $true
     $temporary = $Path + '.' + [guid]::NewGuid().ToString('N') + '.tmp'
     [IO.File]::WriteAllText($temporary, ($Value | ConvertTo-Json -Depth 16 -Compress), [Text.UTF8Encoding]::new($false))
     try {
@@ -16,7 +18,8 @@ function Read-AitJson([string]$Path) {
         $stream=[IO.File]::Open($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,$share)
         if($stream.Length -gt 1048576){throw 'AIT2-100: oversized state file.'}
         $reader=[IO.StreamReader]::new($stream,[Text.UTF8Encoding]::new($false,$true),$true)
-        return ($reader.ReadToEnd() | ConvertFrom-Json)
+        $value=$reader.ReadToEnd() | ConvertFrom-Json
+        return Convert-AitStorageJson $Path $value $false
     } finally {if($reader){$reader.Dispose()}elseif($stream){$stream.Dispose()}}
 }
 function Protect-AitMessage([string]$Text) {
@@ -60,7 +63,7 @@ function Assert-AitOrdinaryPath([string]$Path) {
 
 function Test-AitPayload([string]$Root) {
     $manifest=Read-AitJson (Join-Path $Root 'manifest.json')
-    if (-not $manifest -or $manifest.version -ne '1.0.4' -or -not $manifest.files) { throw 'AIT2-120: Нет корректного манифеста. Переустановите Ai Transcriber через ReaPack или распакуйте полный установочный архив.' }
+    if (-not $manifest -or $manifest.version -ne '1.1.0' -or -not $manifest.files) { throw 'AIT2-120: Нет корректного манифеста. Переустановите Ai Transcriber через ReaPack или распакуйте полный установочный архив.' }
     foreach ($entry in $manifest.files.PSObject.Properties) {
         $path=[IO.Path]::GetFullPath((Join-Path $Root $entry.Name))
         if (-not $path.StartsWith($Root.TrimEnd('\')+'\',[StringComparison]::OrdinalIgnoreCase)) { throw 'AIT2-120: Invalid manifest path.' }

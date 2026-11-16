@@ -4,12 +4,12 @@
   "name": "Aiwist",
   "category": "Transcriber",
   "package": "Aiwist_Transcriber.lua",
-  "time": "2026-11-15T09:49:46Z",
+  "time": "2026-11-16T14:49:35Z",
   "changes": [
-    "Fix the single-transcription config writer: an empty instrument selection enables automatic detection.",
-    "Use the shared JSON encoder when saving the actual engine configuration; no queue is added.",
-    "Exercise the real single-transcription entry point and pass its exact config file to CPU and Vulkan engines.",
-    "Restore normal Windows integrity labels during ZIP installation and before ReaPack engine launches.",
-    "Show AITN-114 if Windows prevents integrity repair; display progress percentages only once."
+    "Choose a shared data folder for settings, temporary files, logs and local environments.",
+    "Portable REAPER defaults to Data/Ai Transcriber; persisted internal paths follow the REAPER profile.",
+    "Copy and verify data before switching folders; keep source files and refuse differing destination files.",
+    "Model folders remain independently selectable. Close and reopen the script after switching storage.",
+    "Normal Windows security labels are checked before requesting a repair; engine binaries are unchanged."
   ]
 }

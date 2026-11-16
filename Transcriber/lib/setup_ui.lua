@@ -7,7 +7,7 @@ local function text(r,c,v)r.ImGui_TextWrapped(c,tostring(v))end
 local function colored(r,c,color,v)r.ImGui_PushStyleColor(c,r.ImGui_Col_Text(),color);text(r,c,v);r.ImGui_PopStyleColor(c)end
 local function size_label(bytes,fallback)if not bytes then return fallback end;if bytes<1073741824 then return string.format('%.1f MiB',bytes/1048576)end;return string.format('%.2f GiB',bytes/1073741824)end
 local function maintenance(a)return a=='support_report'or a=='storage_scan'or a=='storage_clean'end
-local allowed={native_download=true,native_neuralnote=true,native_devices=true,storage_scan=true,storage_clean=true}
+local allowed={native_storage_migrate=true,native_download=true,native_neuralnote=true,native_devices=true,storage_scan=true,storage_clean=true}
 function M.new(r,dir,state,J,on_change,data)
  r.RecursiveCreateDirectory(state..'\\jobs',0)
  local self=setmetatable({r=r,dir=dir,root=state,json=J,on_change=on_change,data_root=data,active={},open=false,page=0,last_poll=-math.huge},M)

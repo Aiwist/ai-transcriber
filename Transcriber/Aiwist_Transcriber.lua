@@ -1,4 +1,4 @@
--- @version 1.0.4
+-- @version 1.1.0
 -- @description Ai Transcriber
 -- @author Aiwist
 -- @license Apache-2.0
@@ -6,11 +6,11 @@
 -- AI-assisted development: OpenAI Codex.
 -- Attribution/scope: NOTICE.txt; full license: licenses/AiTranscriber-Lua-APACHE-2.0.txt
 -- @changelog
---   Fix the single-transcription config writer: an empty instrument selection enables automatic detection.
---   Use the shared JSON encoder when saving the actual engine configuration; no queue is added.
---   Exercise the real single-transcription entry point and pass its exact config file to CPU and Vulkan engines.
---   Restore normal Windows integrity labels during ZIP installation and before ReaPack engine launches.
---   Show AITN-114 if Windows prevents integrity repair; display progress percentages only once.
+--   Choose a shared data folder for settings, temporary files, logs and local environments.
+--   Portable REAPER defaults to Data/Ai Transcriber; persisted internal paths follow the REAPER profile.
+--   Copy and verify data before switching folders; keep source files and refuse differing destination files.
+--   Model folders remain independently selectable. Close and reopen the script after switching storage.
+--   Normal Windows security labels are checked before requesting a repair; engine binaries are unchanged.
 -- @about
 --   Audio to MIDI in REAPER. Windows x64; requires ReaImGui (cfillion).
 --   The native engine supports Vulkan GPU and CPU. No Python environment.
@@ -37,6 +37,7 @@
 --   [win64 nomain] fonts/JetBrainsMono-Medium.ttf
 --   [win64 nomain] fonts/JetBrainsMono-Regular.ttf
 --   [win64 nomain] fonts/lucide.ttf
+--   [win64 nomain] lib/data_storage.lua
 --   [win64 nomain] lib/first_run.lua
 --   [win64 nomain] lib/gguf_health.lua
 --   [win64 nomain] lib/gui_context.lua
@@ -70,10 +71,11 @@
 --   [win64 nomain] manifest.tsv
 --   [win64 nomain] native_models.json
 --   [win64 nomain] native_release.json
---   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.4/ai_transcriber_native_cpu.exe
---   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.0.4/ai_transcriber_native_vulkan.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-cpu/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.1.0/ai_transcriber_native_cpu.exe
+--   [win64 nomain] runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe https://github.com/Aiwist/ai-transcriber/releases/download/v1.1.0/ai_transcriber_native_vulkan.exe
 --   [win64 nomain] setup/bootstrap.ps1
 --   [win64 nomain] setup/common.ps1
+--   [win64 nomain] setup/data_storage.ps1
 --   [win64 nomain] setup/download_progress.ps1
 --   [win64 nomain] setup/integrity.ps1
 --   [win64 nomain] setup/launch_process.ps1
@@ -82,6 +84,7 @@
 --   [win64 nomain] setup/native_runner.ps1
 --   [win64 nomain] setup/native_setup.ps1
 --   [win64 nomain] setup/single_runner.ps1
+--   [win64 nomain] setup/storage_codec.ps1
 --   [win64 nomain] setup/worker.ps1
 --[[
   Ai Transcriber — аудио в MIDI через локально установленный MuScriptor
@@ -100,7 +103,7 @@
 -- ============================================================
 -- РџРЈРўР
 -- ============================================================
-local SCRIPT_VERSION = "1.0.4"
+local SCRIPT_VERSION = "1.1.0"
 -- Путь к текущему скрипту: get_action_context возвращает
 -- (is_new_value, filename, sectionID, cmdID, mode, resolution)
 local _, action_full = reaper.get_action_context()
@@ -128,10 +131,19 @@ local HiddenRunner=dofile(script_dir..'\\lib\\hidden_runner.lua')
 local ModelPicker = dofile(script_dir .. "\\lib\\model_picker.lua")
 local StatePaths = dofile(script_dir .. "\\lib\\state_paths.lua")
 local STATE_ROOT, DEFAULT_COMPONENTS, STATE_NOTICE
+local DATA_STORAGE
 if PREVIEW then
   STATE_ROOT=LOCAL_APP_DATA.."\\Aiwist\\Ai Transcriber Preview";DEFAULT_COMPONENTS=STATE_ROOT.."\\components"
   reaper.RecursiveCreateDirectory(STATE_ROOT,0)
-else STATE_ROOT,DEFAULT_COMPONENTS,STATE_NOTICE=StatePaths.prepare(reaper,JSON,LOCAL_APP_DATA)end
+else
+  local DataStorage=dofile(script_dir..'\\lib\\data_storage.lua')
+  local ok,storage,root,components,notice=pcall(DataStorage.new,reaper,JSON,PREF_SECTION,LOCAL_APP_DATA,StatePaths)
+  if not ok then
+    if DataStorage.recover(reaper,JSON,PREF_SECTION,storage)then reaper.defer(function()dofile(script_full)end)end
+    return
+  end
+  DATA_STORAGE=storage;STATE_ROOT=root;DEFAULT_COMPONENTS=components;STATE_NOTICE=notice
+end
 local InstrumentMemory=dofile(script_dir..'\\lib\\instrument_memory.lua')
 local INSTRUMENT_MEMORY
 local SetupUI = dofile(script_dir .. "\\lib\\native_components.lua")
@@ -139,9 +151,10 @@ local GuiContext=dofile(script_dir..'\\lib\\gui_context.lua')
 local COMPONENTS
 local ENGINE
 local state
-local NATIVE_COMPONENTS = PREVIEW and DEFAULT_COMPONENTS or (LOCAL_APP_DATA .. "\\Ai Transcriber")
+local NATIVE_COMPONENTS = DEFAULT_COMPONENTS
 COMPONENTS = SetupUI.new(reaper, script_dir, STATE_ROOT, JSON, nil, NATIVE_COMPONENTS)
 COMPONENTS.version=SCRIPT_VERSION
+COMPONENTS.data_storage=DATA_STORAGE
 local NativeDevices=dofile(script_dir..'\\lib\\native_devices.lua')
 local DEVICE_PICKER=NativeDevices.new(reaper,JSON,script_dir,STATE_ROOT,COMPONENTS:engine(),PREF_SECTION)
 if STATE_NOTICE then COMPONENTS.notice=STATE_NOTICE; COMPONENTS.open=true end
@@ -526,10 +539,7 @@ local function powershell_quote(value)
 end
 
 local function copy_diagnostic_log_to_clipboard()
-  local local_app_data = LOCAL_APP_DATA
-  local log_dir = local_app_data and local_app_data ~= ""
-    and (local_app_data .. "\\Aiwist Transcriber\\Logs")
-    or (TEMP .. "Aiwist Transcriber Logs")
+  local log_dir = STATE_ROOT .. "\\logs"
   reaper.RecursiveCreateDirectory(log_dir, 0)
 
   local timestamp = os.date("%Y-%m-%d_%H-%M-%S")

@@ -1,6 +1,6 @@
 ﻿param([switch]$LibraryOnly)
 $ErrorActionPreference='Stop'
-$script:SetupVersion='1.0.4'
+$script:SetupVersion='1.1.0'
 $script:SetupPayloadRoot=Join-Path $PSScriptRoot 'Transcriber'
 $script:SetupFiles=@(
     'Aiwist_Transcriber.lua',
@@ -17,6 +17,7 @@ $script:SetupFiles=@(
     'fonts/JetBrainsMono-Medium.ttf',
     'fonts/JetBrainsMono-Regular.ttf',
     'fonts/lucide.ttf',
+    'lib/data_storage.lua',
     'lib/first_run.lua',
     'lib/gguf_health.lua',
     'lib/gui_context.lua',
@@ -53,6 +54,7 @@ $script:SetupFiles=@(
     'runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe',
     'setup/bootstrap.ps1',
     'setup/common.ps1',
+    'setup/data_storage.ps1',
     'setup/download_progress.ps1',
     'setup/integrity.ps1',
     'setup/launch_process.ps1',
@@ -61,6 +63,7 @@ $script:SetupFiles=@(
     'setup/native_runner.ps1',
     'setup/native_setup.ps1',
     'setup/single_runner.ps1',
+    'setup/storage_codec.ps1',
     'setup/worker.ps1'
 )
 function Get-SetupSafePath([string]$Root,[string]$Relative) {

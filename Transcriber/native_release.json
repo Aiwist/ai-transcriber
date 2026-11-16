@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "production_state": true,
-  "version": "1.0.4",
+  "version": "1.1.0",
   "runtime": {
     "file": "runtime/muscriptor-34a01513-vulkan/ai_transcriber_native.exe",
     "asset": "ai_transcriber_native_vulkan.exe",
